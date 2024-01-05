@@ -3,7 +3,6 @@ package BOJ;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class BOJ3197 {
 
@@ -21,7 +20,6 @@ public class BOJ3197 {
         }
 
         int[][] area = new int[r][c];  //지형
-        String[][] check = new String[r][c];  //백조찾기
         int l = -1;
         int[] lPosition = new int[2];
         int count = 0; // 얼음 녹는 날
@@ -45,6 +43,7 @@ public class BOJ3197 {
 
         boolean isFindL = false;
         while (true) {
+            boolean[][] check = new boolean[r][c];  //백조찾기
             isFindL = findL(area, check, lPosition[0], lPosition[1]);
             if (isFindL) break;
             removeIce(area, ++count);
@@ -77,22 +76,15 @@ public class BOJ3197 {
     }
 
 
-    public static boolean findL(int[][] area, String[][] check, int li, int lj) {
-
-        for (int i = 0; i < check.length; i++) {
-            Arrays.fill(check[i], "");
-        }
-
+    public static boolean findL(int[][] area, boolean[][] check, int li, int lj) {
         return rec_findL(area, check, li, lj);
     }
 
-    public static boolean rec_findL(int[][] area, String[][] check, int li, int lj) {
+    public static boolean rec_findL(int[][] area, boolean[][] check, int li, int lj) {
 
         if (li < 0 || li >= area.length || lj < 0 || lj >= area[0].length) { //범위초과
             return false;
         }
-
-//        System.out.println(li + " " + lj + " " + area[li][lj]);
 
         if (area[li][lj] == 1) { //벽
             return false;
@@ -102,26 +94,12 @@ public class BOJ3197 {
             return true;
         }
 
-        boolean[] result = new boolean[4];
+        if (check[li][lj])  //한번 들린곳은 멈춰~
+            return false;
 
-        if (!check[li][lj].contains("u")) {
-            check[li][lj] += "u";
-            result[0] = rec_findL(area, check, li - 1, lj);
-        }
-        if (!check[li][lj].contains("d")) {
-            check[li][lj] += "d";
-            result[1] = rec_findL(area, check, li + 1, lj);
-        }
-        if (!check[li][lj].contains("l")) {
-            check[li][lj] += "l";
-            result[2] = rec_findL(area, check, li, lj - 1);
-        }
-        if (!check[li][lj].contains("r")) {
-            check[li][lj] += "r";
-            result[3] = rec_findL(area, check, li, lj + 1);
-        }
-        return result[0] || result[1] || result[2] || result[3];
-
+        check[li][lj] = true;
+        return rec_findL(area, check, li - 1, lj) || rec_findL(area, check, li + 1, lj)
+                || rec_findL(area, check, li, lj - 1) || rec_findL(area, check, li, lj + 1);
     }
 
 }
