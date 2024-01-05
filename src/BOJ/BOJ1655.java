@@ -3,7 +3,7 @@ package BOJ;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BOJ1655 {
@@ -11,26 +11,40 @@ public class BOJ1655 {
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder builder = new StringBuilder();
+
         int n = Integer.parseInt(br.readLine());
 
-        List<Integer> list = new LinkedList<>();
+        List<Integer> list = new ArrayList<>();
         list.add(Integer.parseInt(br.readLine()));
-        System.out.println(getCenter(list));
+        builder.append(getCenterIndex(list)).append("\n");
 
         int input;
         for (int i = 0; i < n - 1; i++) {
             input = Integer.parseInt(br.readLine());
-            list.add(aaa(list, input), input);
-            System.out.println(getCenter(list));
+            list.add(sortedIndex(list, input), input);
+            builder.append(getCenterIndex(list)).append("\n");
         }
 
+        System.out.println(builder);
+
     }
 
-    private static int aaa(List<Integer> list, int n) {
-        return bbb(list, n, 0, list.size() - 1);
+    /**
+     * 정렬된 상태로 추가될 인덱스
+     * @param list
+     * @param n
+     * @return
+     */
+    public static int sortedIndex(List<Integer> list, int n) {
+        return rec_sortedIndex(list, n, 0, list.size() - 1);
     }
 
-    private static int bbb(List<Integer> list, int n, int start, int end) {
+    private static int rec_sortedIndex(List<Integer> list, int n, int start, int end) {
+        if (start > end) { // 짝수개 일때 최대값 처리용
+            return start;
+        }
+
         if (start == end) {
             return list.get(start) < n ? start + 1 : start;
         }
@@ -39,25 +53,23 @@ public class BOJ1655 {
         int center = start + (size / 2);
 
         if (list.get(center) <= n) {
-            return bbb(list, n, center + 1, end);
+            return rec_sortedIndex(list, n, center + 1, end);
         } else {
-            return bbb(list, n, start, center - 1);
+            return rec_sortedIndex(list, n, start, center - 1);
         }
     }
 
-    public static int getCenter(List<Integer> list) {
+    /**
+     * list의 가운데 인덱스
+     * @param list
+     * @return
+     */
+    public static int getCenterIndex(List<Integer> list) {
 
         int size = list.size();
         int centerIndex = size / 2;
-        int center = list.get(centerIndex);
-        int center2;
 
-        if (size % 2 == 0) {
-            center2 = list.get(centerIndex - 1);
-            center = center > center2 ? center2 : center;
-        }
-
-        return center;
+        return size % 2 == 0 ? list.get(centerIndex - 1) : list.get(centerIndex);
     }
 }
 
