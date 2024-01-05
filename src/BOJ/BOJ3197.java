@@ -3,8 +3,20 @@ package BOJ;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BOJ3197 {
+
+    static class Position {
+        int r;
+        int c;
+
+        public Position(int r, int c) {
+            this.r = r;
+            this.c = c;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
 
@@ -23,7 +35,7 @@ public class BOJ3197 {
         int l = -1;
         int[] lPosition = new int[2];
         int count = 0; // 얼음 녹는 날
-
+        Queue<Position> water = new LinkedList<>();
 
         //지형 설정
         for (int i = 0; i < area.length; i++) {
@@ -31,9 +43,11 @@ public class BOJ3197 {
             for (int j = 0; j < area[i].length; j++) {
                 if (".".equals(split[j])) {  //물
                     area[i][j] = 10;
+                    water.add(new Position(i, j));
                 } else if ("X".equals(split[j])) {  //얼음
                     area[i][j] = 1;
                 } else {  //L
+                    water.add(new Position(i, j));
                     area[i][j] = l++;
                     lPosition[0] = i;
                     lPosition[1] = j;
@@ -43,38 +57,46 @@ public class BOJ3197 {
 
         boolean isFindL = false;
         while (true) {
+            removeIce(area, water, ++count);
             boolean[][] check = new boolean[r][c];  //백조찾기
             isFindL = findL(area, check, lPosition[0], lPosition[1]);
             if (isFindL) break;
-            removeIce(area, ++count);
         }
 
         System.out.println(count);
     }
 
-    public static void removeIce(int[][] area, int count) {
-        for (int i = 0; i < area.length; i++) {
-            for (int j = 0; j < area[i].length; j++) {
-                if (area[i][j] == (10 + count - 1)) {  //오늘치 물일 때
+    public static void removeIce(int[][] area, Queue<Position> water, int count) {
+        water.add(null);
 
-                    if (i > 0 && area[i - 1][j] == 1) { //위
-                        area[i - 1][j] = 10 + count;
-                    }
-                    if (i < area.length - 1 && area[i + 1][j] == 1) { //아래
-                        area[i + 1][j] = 10 + count;
-                    }
-                    if (j > 0 && area[i][j - 1] == 1) { //왼쪽
-                        area[i][j - 1] = 10 + count;
-                    }
-                    if (j < area[i].length - 1 && area[i][j + 1] == 1) { //오른쪽
-                        area[i][j + 1] = 10 + count;
-                    }
+        while (true) {
+            Position waterPosition = water.remove();
 
-                }
+            if (waterPosition == null) break;
+
+            int i = waterPosition.r;
+            int j = waterPosition.c;
+
+            if (i > 0 && area[i - 1][j] == 1) { //위
+                water.add(new Position(i - 1, j));
+                area[i - 1][j] = 10 + count;
             }
-        }
-    }
+            if (i < area.length - 1 && area[i + 1][j] == 1) { //아래
+                water.add(new Position(i + 1, j));
+                area[i + 1][j] = 10 + count;
+            }
+            if (j > 0 && area[i][j - 1] == 1) { //왼쪽
+                water.add(new Position(i, j - 1));
+                area[i][j - 1] = 10 + count;
+            }
+            if (j < area[i].length - 1 && area[i][j + 1] == 1) { //오른쪽
+                water.add(new Position(i, j + 1));
+                area[i][j + 1] = 10 + count;
+            }
 
+        }
+
+    }
 
     public static boolean findL(int[][] area, boolean[][] check, int li, int lj) {
         return rec_findL(area, check, li, lj);
@@ -94,7 +116,7 @@ public class BOJ3197 {
             return true;
         }
 
-        if (check[li][lj])  //한번 들린곳은 멈춰~
+        if (check[li][lj])  //한번 들른 곳은 멈춰~
             return false;
 
         check[li][lj] = true;
