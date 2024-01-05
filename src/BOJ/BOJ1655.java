@@ -19,26 +19,30 @@ public class BOJ1655 {
 
         int input;
         for (int i = 0; i < n - 1; i++) {
-            System.out.println(list);
             input = Integer.parseInt(br.readLine());
-            list.add(addIndex(list, input), input);
+            list.add(aaa(list, input), input);
             System.out.println(getCenter(list));
         }
 
     }
 
-    private static int addIndex(List<Integer> list, int n) {
+    private static int aaa(List<Integer> list, int n) {
+        return bbb(list, n, 0, list.size() - 1);
+    }
 
-        int index = 0;
-
-        while (list.size() > index) {
-            if (list.get(index) > n) {
-                break;
-            }
-            index++;
+    private static int bbb(List<Integer> list, int n, int start, int end) {
+        if (start == end) {
+            return list.get(start) < n ? start + 1 : start;
         }
 
-        return index;
+        int size = end - start + 1;
+        int center = start + (size / 2);
+
+        if (list.get(center) <= n) {
+            return bbb(list, n, center + 1, end);
+        } else {
+            return bbb(list, n, start, center - 1);
+        }
     }
 
     public static int getCenter(List<Integer> list) {
