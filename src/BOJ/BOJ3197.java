@@ -3,8 +3,7 @@ package BOJ;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class BOJ3197 {
 
@@ -55,15 +54,14 @@ public class BOJ3197 {
             }
         }
 
-        boolean isFindL = false;
         while (true) {
             removeIce(area, water, ++count);
-            boolean[][] check = new boolean[r][c];  //백조찾기
-            isFindL = findL(area, check, lPosition[0], lPosition[1]);
-            if (isFindL) break;
+            if (water.isEmpty())
+                break;
         }
 
-        System.out.println(count);
+        boolean[][] check = new boolean[r][c];  //백조찾기
+        System.out.println(findL(area, check, lPosition[0], lPosition[1]) - 10);
     }
 
     public static void removeIce(int[][] area, Queue<Position> water, int count) {
@@ -98,30 +96,36 @@ public class BOJ3197 {
 
     }
 
-    public static boolean findL(int[][] area, boolean[][] check, int li, int lj) {
-        return rec_findL(area, check, li, lj);
+    public static int findL(int[][] area, boolean[][] check, int li, int lj) {
+        return rec_findL(area, check, li, lj, 0);
     }
 
-    public static boolean rec_findL(int[][] area, boolean[][] check, int li, int lj) {
+    public static int rec_findL(int[][] area, boolean[][] check, int li, int lj, int max) {
 
         if (li < 0 || li >= area.length || lj < 0 || lj >= area[0].length) { //범위초과
-            return false;
+            return Integer.MAX_VALUE;
         }
 
         if (area[li][lj] == 1) { //벽
-            return false;
+            return Integer.MAX_VALUE;
         }
 
         if (area[li][lj] == -1) { //백조
-            return true;
+            return max;
         }
 
         if (check[li][lj])  //한번 들른 곳은 멈춰~
-            return false;
-
+            return Integer.MAX_VALUE;
         check[li][lj] = true;
-        return rec_findL(area, check, li - 1, lj) || rec_findL(area, check, li + 1, lj)
-                || rec_findL(area, check, li, lj - 1) || rec_findL(area, check, li, lj + 1);
+
+        int nowMax = Math.max(area[li][lj], max);
+
+        List<Integer> intList = Arrays.asList(
+                rec_findL(area, check, li - 1, lj, nowMax),
+                rec_findL(area, check, li + 1, lj, nowMax),
+                rec_findL(area, check, li, lj - 1, nowMax),
+                rec_findL(area, check, li, lj + 1, nowMax));
+        return Collections.min(intList);
     }
 
 }
