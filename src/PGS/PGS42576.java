@@ -1,25 +1,27 @@
 package PGS;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 public class PGS42576 {
 
     public static void main(String[] args) {
 
+        System.out.println(solution(new String[]{"leo", "kiki", "eden"}, new String[]{"eden", "kiki"}));
     }
 
-    public String solution(String[] participant, String[] completion) {
+    public static String solution(String[] participant, String[] completion) {
 
-        List<String> list = Stream.of(completion).collect(Collectors.toList());
+        Arrays.sort(participant);
+        Arrays.sort(completion);
 
-        for (int i = 0; i < participant.length; i++) {
-            if (!list.remove(participant[i])) {
+        int i = 0;
+        while (i < completion.length) {
+            if (!participant[i].equals(completion[i])) {
                 return participant[i];
             }
+            i++;
         }
 
-        return "";
+        return participant[i];
     }
 }
