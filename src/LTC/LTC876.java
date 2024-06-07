@@ -7,6 +7,23 @@ public class LTC876 {
 
     public ListNode middleNode(ListNode head) {
 
+        ListNode limit = head;
+        ListNode answer = head;
+
+        while (limit.next != null && limit.next.next != null) {
+            limit = limit.next.next;
+            answer = answer.next;
+        }
+
+        if (limit.next != null) {
+            answer = answer.next;
+        }
+
+        return answer;
+    }
+
+    public ListNode middleNode2(ListNode head) {
+
         int index = 1;
         ListNode node = head;
         while (node.next != null) {
