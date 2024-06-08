@@ -1,7 +1,9 @@
 # 🔥가즈아~ 네카라쿠베🔥
 
 ## commit 규칙
-- commit 메세지: 성공✅/실패💩 [플랫폼코드] 번호.문제이름
+- commit 메세지
+  - 성공✅ / 실패💩 / 다시풀기🧐 / 다시풀기완료🩹
+  - [플랫폼코드] 번호.문제이름
 - description: 문제 주소 (option)
 ```
 git commit -m "[BOJ] 1.Hello World" -m "https://www.acmicpc.net/problem/2557"

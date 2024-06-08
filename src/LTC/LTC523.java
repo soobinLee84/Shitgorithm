@@ -1,10 +1,42 @@
 package LTC;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 523. Continuous Subarray Sum
  */
 public class LTC523 {
 
+    public boolean checkSubarraySum(int[] nums, int k) {
+
+        if (nums.length < 2) return false;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] == 0 && nums[i] == 0) {
+                return true;
+            }
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+
+            if (map.get(sum % k) != null) {
+                if (i - map.get(sum % k) > 1) {
+                    return true;
+                }
+            } else {
+                map.put(sum % k, i);
+            }
+
+        }
+
+        return false;
+    }
 
     // 미리 계산한 합계를 써도 시간초과
     public boolean checkSubarraySum3(int[] nums, int k) {
