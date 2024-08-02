@@ -5,8 +5,26 @@ package LTC;
  */
 public class LTC21 {
 
+    // 재귀
+    public ListNode mergeTwoLists2(ListNode list1, ListNode list2) {
+
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
+
+        if (list1.val <= list2.val) {
+            list1.next = mergeTwoLists(list1.next, list2);
+            return list1;
+        } else {
+            list2.next = mergeTwoLists(list1, list2.next);
+            return list2;
+        }
+
+    }
+
+    // 반복문
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
 
+        // 리스트가 비어있을 경우
         if (list1 == null && list2 == null) {
             return null;
         }
@@ -21,16 +39,7 @@ public class LTC21 {
 
         ListNode a = list1;
         ListNode b = list2;
-        ListNode list = null;
-
-        if (a.val < b.val) {
-            list = new ListNode(a.val);
-            a = a.next;
-        } else {
-            list = new ListNode(b.val);
-            b = b.next;
-        }
-
+        ListNode list = new ListNode(-1);
         ListNode result = list;
 
         while (a != null && b != null) {
@@ -53,24 +62,8 @@ public class LTC21 {
             list.next = a;
         }
 
-        return result;
+        return result.next;
     }
 
-    public class ListNode {
 
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-    }
 }
