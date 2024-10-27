@@ -1,41 +1,38 @@
 package LTC;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LTC819 {
+
+    /**
+     * 시간복잡도 : O(n) / 공간복잡도 : O(n)<br>
+     * (단, n은 단어의 개수)
+     *
+     * @param paragraph
+     * @param banned
+     * @return
+     */
     public String mostCommonWord(String paragraph, String[] banned) {
         Map<String, Integer> map = new HashMap<>();
 
-        String[] str = paragraph
-                .split("[ !?',;.]+");
-
-        System.out.println(Arrays.toString(str));
-
-        int maxCount = 0;
-        String v = "";
-
+        String[] str = paragraph.toLowerCase().split("[ !?',;.]+");
         for (String s : str) {
-            int value = map.getOrDefault(s.toLowerCase(), 0) + 1;
-            map.put(s.toLowerCase(), value);
-
+            map.put(s, map.getOrDefault(s, 0) + 1);
         }
 
         for (String b : banned) {
             map.put(b, 0);
         }
 
-        System.out.println(map);
-
         int max = 0;
         String result = "";
         for (String key : map.keySet()) {
-            if (map.get(key) > max) {
-                max = map.get(key);
+            int val = map.get(key);
+            if (val > max) {
+                max = val;
                 result = key;
             }
-
         }
 
         return result;

@@ -1,7 +1,38 @@
 package LTC;
 
 public class LTC5 {
+
+    /**
+     * 시간복잡도 : O(n^2) / 공간복잡도 : O(1)
+     */
+    int start = 0, maxLen = 1;
     public String longestPalindrome(String s) {
+        if (s.length() == 1) return s;
+
+        for (int i = 0; i < s.length() - 1; i++) {
+            expand(i, i, s);  //3칸짜리 뿌리의 팰린드롬
+            expand(i, i + 1, s);  //2칸짜리 뿌리의 팰린드롬
+        }
+
+        return s.substring(start, start + maxLen);
+    }
+
+    private void expand(int left, int right, String s) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        left++;
+        right--;
+
+        if (maxLen < right - left + 1) {
+            maxLen = right - left + 1;
+            start = left;
+        }
+    }
+
+
+    public String longestPalindrome2(String s) {
 
         if (s.length() == 1)
             return s;
