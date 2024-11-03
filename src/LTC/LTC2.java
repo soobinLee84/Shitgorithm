@@ -1,6 +1,14 @@
 package LTC;
 
 public class LTC2 {
+
+    /**
+     * O(n) /  O(n) <br>
+     * n : l1과 l2중 길이가 더 긴
+     * @param l1
+     * @param l2
+     * @return
+     */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
         int v, r = 0;

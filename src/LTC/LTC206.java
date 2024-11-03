@@ -1,15 +1,20 @@
 package LTC;
 
 public class LTC206 {
-    public ListNode reverseList(ListNode head) {
-        if (head == null) return head;
 
+    /**
+     * O(n) / O(1)
+     * @param head
+     * @return
+     */
+    public ListNode reverseList(ListNode head) {
         ListNode rev = null;
+
         while (head != null) {
-            ListNode next = head.next;
+            ListNode temp = head.next;
             head.next = rev;
             rev = head;
-            head = next;
+            head = temp;
         }
 
         return rev;

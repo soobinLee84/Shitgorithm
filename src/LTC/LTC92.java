@@ -1,18 +1,26 @@
 package LTC;
 
 public class LTC92 {
+
+    /**
+     * O(n) / O(1)
+     * @param head
+     * @param left
+     * @param right
+     * @return
+     */
     public ListNode reverseBetween(ListNode head, int left, int right) {
 
         int index = 1;
-        ListNode rev = null;
         ListNode temp = new ListNode(-1, head);
         ListNode result = temp;
-        ListNode end = null;
+        ListNode rev = null;
+        ListNode revEnd = null;
 
         while (temp.next != null) {
             if (index < left) {
                 temp = temp.next;
-            } else if (right < index) {
+            } else if (index > right) {
                 break;
             } else {
                 ListNode next = temp.next.next;
@@ -20,15 +28,15 @@ public class LTC92 {
                 rev = temp.next;
                 temp.next = next;
 
-                if (index == left) {
-                    end = rev;
+                if (index == left) {  // rev 마지막
+                    revEnd = rev;
                 }
             }
 
             index++;
         }
 
-        end.next = temp.next;
+        revEnd.next = temp.next;
         temp.next = rev;
 
         return result.next;
