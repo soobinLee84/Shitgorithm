@@ -1,6 +1,7 @@
 package LTC;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * 20. Valid Parentheses
@@ -8,7 +9,7 @@ import java.util.Stack;
 public class LTC20 {
 
     public boolean isValid(String s) {
-        Stack<Character> stack = new Stack();
+        Deque<Character> stack = new ArrayDeque<>();
 
         for (char c : s.toCharArray()) {
             if (c == '(') {
@@ -26,7 +27,7 @@ public class LTC20 {
     }
 
     public boolean isValid2(String s) {
-        Stack<Character> stack = new Stack();
+        Deque<Character> stack = new ArrayDeque();
 
         char val = ' ';
         for (char c : s.toCharArray()) {

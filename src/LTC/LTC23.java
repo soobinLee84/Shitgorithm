@@ -1,14 +1,23 @@
 package LTC;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
  * 23. Merge k Sorted Lists
  */
 public class LTC23 {
+
+    /**
+     * 시간복잡도 : O(nlogk), 공간복잡도 : O(k)<br>
+     * n은 모든 노드의 개수, k는 lists.length
+     *
+     * @param lists
+     * @return
+     */
     public static ListNode mergeKLists(ListNode[] lists) {
 
-        PriorityQueue<ListNode> q = new PriorityQueue<>((a, b) -> a.val - b.val);
+        PriorityQueue<ListNode> q = new PriorityQueue<>(Comparator.comparingInt(a -> a.val));
 
         // 각 리스트의 맨앞 숫자를 우선순위큐에 추가
         for (ListNode node : lists) {

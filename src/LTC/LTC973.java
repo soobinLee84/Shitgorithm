@@ -9,7 +9,64 @@ import java.util.PriorityQueue;
 
 public class LTC973 {
 
+    /**
+     * 최소힙 방식 <br>
+     * 시간복잡도 : O(nlogn) / 공간복잡도 : O(n)
+     * @param points
+     * @param k
+     * @return
+     */
+    public int[][] kClosest(int[][] points, int k) {
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                Comparator.comparingDouble(a -> a[0] * a[0] + a[1] * a[1]));
+
+        for (int[] p : points) {
+            pq.add(p);
+        }
+
+        int[][] result = new int[k][2];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = pq.poll();
+        }
+
+        return result;
+
+    }
+
+    /**
+     * 최대힙 방식 <br>
+     * 시간복자도 : O(nlogk) / 공간복잡도 : O(k) <br>
+     * @param points
+     * @param k
+     * @return
+     */
     public int[][] kClosest2(int[][] points, int k) {
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                (a, b) -> Double.compare(
+                        b[0] * b[0] + b[1] * b[1],
+                        a[0] * a[0] + a[1] * a[1]
+                )
+        );
+
+        for (int[] p : points) {
+            pq.add(p);
+            if (pq.size() > k) {
+                pq.poll();  // 가장 먼 점 제거
+            }
+        }
+
+        int[][] result = new int[k][2];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = pq.poll();
+        }
+
+        return result;
+
+    }
+
+    public int[][] kClosest4(int[][] points, int k) {
 
         PriorityQueue<Point> q = new PriorityQueue<>(Comparator.comparingDouble(Point::getDistance));
 
@@ -44,24 +101,5 @@ public class LTC973 {
         public double getDistance() {
             return distance;
         }
-    }
-
-    public int[][] kClosest(int[][] points, int k) {
-
-        PriorityQueue<int[]> q = new PriorityQueue<>(Comparator.comparingDouble(a -> Math.sqrt((long) a[0] * a[0] + (long) a[1] * a[1]))
-        );
-
-        // 우선순위 큐에 넣고
-        for (int[] p : points) {
-            q.add(p);
-        }
-
-        int[][] result = new int[k][2];
-        // 유클리드 거리가 가장 가까운 좌표 추출 k개
-        for (int i = 0; i < k; i++) {
-            result[i] = q.poll();
-        }
-
-        return result;
     }
 }

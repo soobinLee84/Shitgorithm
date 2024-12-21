@@ -43,6 +43,7 @@ public class LTC641 {
         public boolean deleteFront() {
             if (isEmpty()) return false;
 
+            int value = deque[front];
             front = (front + 1) % deque.length;
             size--;
             return true;
@@ -52,6 +53,7 @@ public class LTC641 {
             if (isEmpty()) return false;
 
             rear = (rear - 1 + capacity) % capacity;
+            int value = deque[rear];
             size--;
             return true;
         }
