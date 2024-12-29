@@ -7,17 +7,45 @@ import java.util.Map;
 
 public class LTC310 {
 
-    public static void main(String[] args) {
-        /*System.out.println(findMinHeightTrees(4, new int[][]{
-                {1, 0}, {1, 2}, {1, 3}
-        }));*/
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        if (n == 1) return List.of(0);
 
-        System.out.println(findMinHeightTrees(6, new int[][]{
-                {3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}
-        }));
+        Map<Integer, List<Integer>> g = new HashMap<>();
+
+        // 무방향 경로 그래프 생성
+        for (int[] e : edges) {
+            g.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);
+            g.computeIfAbsent(e[1], k -> new ArrayList<>()).add(e[0]);
+        }
+
+        // 리프 노드 찾기
+        List<Integer> leaf = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (g.get(i).size() == 1) {  //부모노드
+                leaf.add(i);
+            }
+        }
+
+        while (n > 2) {
+            n -= leaf.size();
+
+            List<Integer> newLeaf = new ArrayList<>();
+
+            for (Integer l : leaf) {
+                int parent = g.get(l).get(0);
+                g.get(parent).remove(l);
+                if (g.get(parent).size() == 1) {
+                    newLeaf.add(parent);
+                }
+            }
+
+            leaf = newLeaf;
+        }
+
+        return leaf;
     }
 
-    public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
+    public static List<Integer> findMinHeightTrees1(int n, int[][] edges) {
 
         if (n == 1) return List.of(0);
 
