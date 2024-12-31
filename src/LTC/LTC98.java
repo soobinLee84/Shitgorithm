@@ -5,21 +5,25 @@ import java.util.Collections;
 import java.util.List;
 
 public class LTC98 {
-    boolean isValid = true;
 
     public boolean isValidBST(TreeNode root) {
-        return search(root, root.val);
+        return valid(root, null, null);
     }
 
-    public boolean search(TreeNode root, int m) {
+    public boolean valid(TreeNode root, Integer min, Integer max) {
         if (root == null) {
             return true;
         }
 
-        return false;
+        if ((min != null && root.val <= min) || (max != null && root.val >= max)) {
+            return false;
+        }
 
+        return valid(root.left, min, root.val) && valid(root.right, root.val, max);
     }
 
+
+    boolean isValid = true;
     public int[] search2(TreeNode root) {
 
         List<Integer> min = new ArrayList<>();
